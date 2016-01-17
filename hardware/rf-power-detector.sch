@@ -9996,7 +9996,7 @@ DIN A4, landscape with location and doc. field</description>
 <part name="R8" library="rcl" deviceset="R-EU_" device="R0603" value="dnp"/>
 <part name="GND24" library="supply1" deviceset="GND" device=""/>
 <part name="R9" library="rcl" deviceset="R-EU_" device="R0603" value="0"/>
-<part name="R10" library="rcl" deviceset="R-EU_" device="R0603" value="dnp"/>
+<part name="R10" library="rcl" deviceset="R-EU_" device="R0603" value="150"/>
 <part name="GND25" library="supply1" deviceset="GND" device=""/>
 <part name="BOX1" library="hammond" deviceset="HAMMOND-BOX" device="-1551G" value="HAMMOND-BOX-1551G"/>
 <part name="C14" library="rcl" deviceset="C-EU" device="C0603" value="100n"/>

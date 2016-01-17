@@ -1848,7 +1848,7 @@ OSH Park compatible</description>
 <element name="LED2" library="led" package="SML0805" value="" x="22.2504" y="25.4508" rot="R180"/>
 <element name="LP1" library="balto" package="VLP-XXX-X" value="VLP-XXX-X" x="22.2504" y="24.6888" rot="R180"/>
 <element name="R1" library="rcl" package="R0603" value="52.3" x="24.6888" y="13.5636" rot="R90"/>
-<element name="R10" library="rcl" package="R0603" value="dnp" x="12.8016" y="12.192" rot="R90"/>
+<element name="R10" library="rcl" package="R0603" value="150" x="12.8016" y="12.192" rot="R90"/>
 <element name="R13" library="rcl" package="R0603" value="330" x="17.9832" y="23.9268" rot="R180"/>
 <element name="R15" library="rcl" package="R0603" value="330" x="17.9832" y="25.4508" rot="R180"/>
 <element name="R2" library="rcl" package="R0603" value="1k5" x="7.0104" y="19.05" rot="R90"/>
