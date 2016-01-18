@@ -14,7 +14,7 @@ BOOTLOADER_FLAGS = -r main_text.hex
 F_CPU = 16500000
 MCU = attiny45
 
-CFLAGS	= -Os -Wall -DF_CPU=$(F_CPU) -mmcu=$(MCU) -Iusbdrv -I.
+CFLAGS	= -Os -Wall -DF_CPU=$(F_CPU) -mmcu=$(MCU) -Iusbdrv -I. -DPAD_DB=40
 ASFLAGS	= -Os -Wall -DF_CPU=$(F_CPU) -mmcu=$(MCU) -Iusbdrv -I.
 LDFLAGS	= 
 

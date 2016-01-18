@@ -55,6 +55,10 @@ usbMsgLen_t usbFunctionSetup(uint8_t data[8])
 		return_value = raw_val;
 		usbMsgPtr = (uint8_t *)&return_value;
 		return sizeof(return_value);
+	case CUSTOM_RQ_GET_PAD_DB:
+		return_value = PAD_DB;
+		usbMsgPtr = (uint8_t *)&return_value;
+		return sizeof(return_value);
 	case CUSTOM_RQ_RESET:
 		reset_cpu();
 		return 0;
