@@ -77,6 +77,7 @@ int main(int argc, char **argv)
 	float slope = -22;
 	float intercept = 15;
 	float vout;
+	float dbm_in;
 	float dbm;
 	float pad = 0;
 	float mw;
@@ -119,9 +120,15 @@ int main(int argc, char **argv)
 	for (;;) {
 		raw_data = get_uint16(handle, CUSTOM_RQ_GET_VALUE);
 		vout = 2560.0 / 1024 * (float)raw_data;
-		dbm = vout / slope + intercept + fixed_pad_db + pad;
+		dbm_in = vout / slope + intercept;
+		dbm = dbm_in + fixed_pad_db + pad;
 		mw = powf(10, dbm/10);
-		printf("power: %7.2fdBm, %9.2f mW\n", dbm, mw);
+		printf("power: %7.2fdBm, %9.2f mW", dbm, mw);
+		if (dbm_in < -50)
+			printf(" [no signal]");
+		else if (dbm_in > -5)
+			printf(" [overloaded]");
+		printf("\n");
 		usleep(delay * 1000);
 	}
 
