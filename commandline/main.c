@@ -58,7 +58,7 @@ static void usage(char *name)
 {
 	fprintf(stderr, "Usage: %s -h\n", name);
 	fprintf(stderr, "       %s -R\n", name);
-	fprintf(stderr, "       %s [options] divisor\n", name);
+	fprintf(stderr, "       %s [options]\n", name);
 	fprintf(stderr, "options:\n"
 			"  -h         this help\n"
 			"  -R         reset device\n"
