@@ -15,7 +15,7 @@
 
 #include "../firmware/requests.h"
 
-#define PRODUCT "usb-power-detector"
+#define PRODUCT "rf-power-detector"
 
 static int get_uint16(usb_dev_handle *handle, int req)
 {
