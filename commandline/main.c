@@ -13,46 +13,7 @@
 
 #include "opendevice.h"
 
-#include "../firmware/requests.h"
-
-#define PRODUCT "rf-power-detector"
-
-static int get_uint16(usb_dev_handle *handle, int req)
-{
-	int ret;
-	uint16_t data;
-
-	ret = usb_control_msg(handle,
-			      USB_TYPE_VENDOR | USB_RECIP_DEVICE |
-			      USB_ENDPOINT_IN,
-			      req,
-			      0, 0, (char *)&data, sizeof(data), 1000);
-
-	if (ret < 0) {
-		printf("usb_control_msg: %s\n", usb_strerror());
-		exit(1);
-	}
-
-	data = le16toh(data);
-
-	return data;
-}
-
-static void send_reset(usb_dev_handle *handle)
-{
-	int ret;
-
-	ret = usb_control_msg(handle,
-			      USB_TYPE_VENDOR | USB_RECIP_DEVICE |
-			      USB_ENDPOINT_IN,
-			      CUSTOM_RQ_RESET,
-			      0, 0, NULL, 0, 1000);
-
-	if (ret < 0) {
-		printf("usb_control_msg: %s\n", usb_strerror());
-		exit(1);
-	}
-}
+#include "librfpower.h"
 
 static void usage(char *name)
 {
@@ -73,10 +34,6 @@ int main(int argc, char **argv)
 	usb_dev_handle *handle = NULL;
 	int opt;
 	int reset = 0;
-	int raw_data;
-	float slope = -22;
-	float intercept = 15;
-	float vout;
 	float dbm_in;
 	float dbm;
 	float pad = 0;
@@ -105,28 +62,26 @@ int main(int argc, char **argv)
 		}
 	}
 
-	if (usbOpenDevice(&handle, 0, NULL, 0, PRODUCT, NULL, NULL, NULL) != 0) {
-		fprintf(stderr, "error: could not find USB device \"%s\"\n", PRODUCT);
+	if (usbOpenDevice(&handle, 0, NULL, 0, RFPOWER_PRODUCT, NULL, NULL, NULL) != 0) {
+		fprintf(stderr, "error: could not find USB device \"%s\"\n", RFPOWER_PRODUCT);
 		exit(1);
 	}
 
 	if (reset) {
-		send_reset(handle);
+		rfpower_send_reset(handle);
 		return 0;
 	}
 
-	fixed_pad_db = get_uint16(handle, CUSTOM_RQ_GET_PAD_DB);
+	fixed_pad_db = rfpower_get_pad(handle);
 	printf("fixed_pad: %ddB, pad: %.1fdB\n", fixed_pad_db, pad);
 	for (;;) {
-		raw_data = get_uint16(handle, CUSTOM_RQ_GET_VALUE);
-		vout = 2560.0 / 1024 * (float)raw_data;
-		dbm_in = vout / slope + intercept;
+		dbm_in = rfpower_get_dbm(handle);
 		dbm = dbm_in + fixed_pad_db + pad;
 		mw = powf(10, dbm/10);
 		printf("power: %7.2fdBm, %9.2f mW", dbm, mw);
-		if (dbm_in < -50)
+		if (dbm_in < RFPOWER_DBM_LOW)
 			printf(" [no signal]");
-		else if (dbm_in > -5)
+		else if (dbm_in > RFPOWER_DBM_HIGH)
 			printf(" [overloaded]");
 		printf("\n");
 		usleep(delay * 1000);
